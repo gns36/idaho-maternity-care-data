@@ -18,7 +18,7 @@ Because the period before the ban (2016 to 2021) and the period after it (2022 t
 | Washington | −3.9% | −4.9% |
 | United States | −2.3% | −3.7% |
 
-The number of OB-GYNs per woman in Idaho was falling before the ban and continued to fall after it. Washington followed a similar path over the same years, and the decline was faster after 2022 in both states and in the country as a whole.
+The number of OB-GYNs per woman in Idaho was falling before the ban and continued to fall after it. Washington followed a similar path over the same years, and the decline was faster after 2022 in both states and in the country as a whole. This measure is imperfect, since it counts only OB-GYNs who billed Medicare for at least 11 patients in a year and so misses those who see few Medicare patients, often those focused on obstetrics. However, when comparing between states and across time this should matter less, as billing Medicare is plausibly unaffected by a ban.
 
 ## Newborn volume at two Canyon County hospitals
 
