@@ -2,7 +2,7 @@
 
 Gabrielle Sorresso, Cornell University, October 2026
 
-This repository holds the data and Stata code supporting a short piece on maternity care in Idaho. The data used come from publicly available federal data files, and the analysis is reproduced in a single do-file, `replicate.do`. The full repository can be downloaded as a [ZIP file](https://github.com/gns36/idaho-maternity-care-data/archive/refs/heads/main.zip).
+This repository holds the data and code behind a short piece on maternity care in Idaho after the state banned abortion in August 2022. All data come from publicly available federal sources and are cleaned using Python files. All analysis is contained in a Stata do-file, `replicate.do`. The full repository can be downloaded as a [ZIP file](https://github.com/gns36/idaho-maternity-care-data/archive/refs/heads/main.zip).
 
 ## OB-GYNs per woman of reproductive age
 

@@ -1,8 +1,8 @@
 """Pull OB-GYN rows from CMS Medicare Physician & Other Practitioners - by Provider, every year.
 
-Uses the data.cms.gov data-api with a server-side filter so only OB-GYN rows come down.
+Uses the data.cms.gov data-api with a server-side filter so only OB-GYN rows are downloaded.
 The provider-type label changed between releases ("Obstetrics/Gynecology" in older years,
-"Obstetrics & Gynecology" in newer ones), so every year is queried with both spellings.
+"Obstetrics & Gynecology" in newer ones), so each year is queried with both spellings.
 Dataset UUIDs come from the CMS catalog https://data.cms.gov/data.json.
 Output: Data/cms_mupphy_obgyn_rows.csv (one row per NPI-year, selected columns only).
 """
