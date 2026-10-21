@@ -48,7 +48,7 @@ Newborn nursery days at West Valley fell by 58 percent between fiscal years 2016
 
 ## Replicating the analysis
 
-To reproduce these numbers, download the repository, open Stata (version 16 or later) in the repository folder, and run `do replicate.do`. The do-file reads the files in `Data/`, writes its tables to `Output/`, and saves the figure to `figures/`. It also stops with an error if any number reported above no longer matches the data.
+To reproduce these numbers, download the repository, open Stata (version 16 or later) in the repository folder, and run `do replicate.do`. The do-file reads the files in `Data/`, writes its tables to `Output/`, and saves the figure to `figures/`.
 
 ## Data
 
