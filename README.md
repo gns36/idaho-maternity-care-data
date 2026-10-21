@@ -10,21 +10,6 @@ I measure the number of OB-GYNs billing Medicare per 100,000 women aged 15 to 44
 
 ![OB-GYNs per 100,000 women aged 15 to 44 in Idaho, Washington and the United States, 2013 to 2024](figures/obgyn_per_woman.png)
 
-| Year | Idaho | Washington | United States |
-|---|---|---|---|
-| 2013 | 36.3 | 34.2 | 43.7 |
-| 2014 | 39.1 | 33.9 | 43.4 |
-| 2015 | 36.2 | 32.8 | 42.8 |
-| 2016 | 35.8 | 31.0 | 42.5 |
-| 2017 | 33.5 | 30.0 | 41.9 |
-| 2018 | 32.5 | 29.5 | 41.4 |
-| 2019 | 34.4 | 28.3 | 40.7 |
-| 2020 | 31.3 | 24.6 | 38.1 |
-| 2021 | 30.5 | 25.5 | 37.9 |
-| 2022 | 28.5 | 23.5 | 36.2 |
-| 2023 | 27.0 | 21.7 | 34.8 |
-| 2024 | 25.8 | 21.2 | 33.6 |
-
 Because the period before the ban (2016 to 2021) and the period after it (2022 to 2024) differ in length, I express the change in each as a yearly rate.
 
 | | Change per year, 2016 to 2021 | Change per year, 2022 to 2024 |
