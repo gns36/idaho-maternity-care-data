@@ -10,9 +10,24 @@ This repository holds the data and Stata code behind a short piece on maternity 
 
 ### OB-GYNs per woman were falling in Idaho before the ban, at a pace similar to Washington's
 
-![OB-GYNs per 100,000 women aged 15 to 44, Idaho, Washington and the United States, 2013 to 2024](figures/obgyn_per_woman.png)
+OB-GYNs billing Medicare per 100,000 women aged 15 to 44, every year:
 
-OB-GYNs billing Medicare per 100,000 women aged 15 to 44:
+| Year | Idaho | Washington | United States |
+|---|---|---|---|
+| 2013 | 36.3 | 34.2 | 43.7 |
+| 2014 | 39.1 | 33.9 | 43.4 |
+| 2015 | 36.2 | 32.8 | 42.8 |
+| 2016 | 35.8 | 31.0 | 42.5 |
+| 2017 | 33.5 | 30.0 | 41.9 |
+| 2018 | 32.5 | 29.5 | 41.4 |
+| 2019 | 34.4 | 28.3 | 40.7 |
+| 2020 | 31.3 | 24.6 | 38.1 |
+| 2021 | 30.5 | 25.5 | 37.9 |
+| 2022 | 28.5 | 23.5 | 36.2 |
+| 2023 | 27.0 | 21.7 | 34.8 |
+| 2024 | 25.8 | 21.2 | 33.6 |
+
+Idaho's ban took effect in August 2022. Before and after, as yearly rates:
 
 | | 2016 | 2021 | 2024 | Change per year, 2016 to 2021 | Change per year, 2021 to 2024 |
 |---|---|---|---|---|---|
@@ -37,7 +52,7 @@ Hospitals do not publish birth counts; newborn nursery days from their Medicare 
 
 1. Download this repository ([ZIP](https://github.com/gns36/idaho-maternity-care-data/archive/refs/heads/main.zip)) or clone it.
 2. Open Stata 16 or later, change the working directory to the repository folder, and run `do replicate.do`.
-3. The do-file writes tables to `Output/` and the figure to `figures/`. It stops with an error if any number above no longer matches the data.
+3. The do-file writes its tables to `Output/`. It stops with an error if any number above no longer matches the data.
 
 `replicate.do` is commented throughout: each step says what it does and why.
 
