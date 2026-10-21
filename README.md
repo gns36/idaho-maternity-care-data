@@ -25,15 +25,15 @@ I measure the number of OB-GYNs billing Medicare per 100,000 women aged 15 to 44
 | 2023 | 27.0 | 21.7 | 34.8 |
 | 2024 | 25.8 | 21.2 | 33.6 |
 
-Because the period before the ban (2016 to 2021) and the period after it (2021 to 2024) differ in length, I express the change in each as a yearly rate.
+Because the period before the ban (2016 to 2021) and the period after it (2022 to 2024) differ in length, I express the change in each as a yearly rate.
 
-| | Change per year, 2016 to 2021 | Change per year, 2021 to 2024 |
+| | Change per year, 2016 to 2021 | Change per year, 2022 to 2024 |
 |---|---|---|
-| Idaho | −3.2% | −5.4% |
-| Washington | −3.9% | −5.9% |
-| United States | −2.3% | −3.9% |
+| Idaho | −3.2% | −4.9% |
+| Washington | −3.9% | −4.9% |
+| United States | −2.3% | −3.7% |
 
-The number of OB-GYNs per woman in Idaho was falling before the ban and continued to fall after it. Washington followed a similar path over the same years, and the decline was faster after 2021 in both states and in the country as a whole.
+The number of OB-GYNs per woman in Idaho was falling before the ban and continued to fall after it. Washington followed a similar path over the same years, and the decline was faster after 2022 in both states and in the country as a whole.
 
 ## Newborn volume at two Canyon County hospitals
 
@@ -61,19 +61,6 @@ All files in `Data/` are extracts of public federal data, retrieved on October 2
 | [`Data/hcris_idaho_newborn_days.csv`](Data/hcris_idaho_newborn_days.csv) | Newborn nursery and labor and delivery days from the cost reports of Idaho hospitals with obstetric units, fiscal years 2016 to 2024 | Centers for Medicare and Medicaid Services, [Hospital Cost Reports (HCRIS), form 2552-10](https://www.cms.gov/data-research/statistics-trends-and-reports/cost-reports/hospital-2552-2010-form) |
 
 The scripts in `Build/` rebuild these files from the original sources using Python 3 with pandas and requests. First, `Build/01_download_cms_mupphy.py` downloads the OB-GYN records from the CMS file for each year. Second, `Build/02_build_census.py` downloads the Census files and computes the number of women aged 15 to 44 by state and year. Lastly, `Build/03_extract_hcris.py` reads the annual cost report files (`HOSP10FY2016.ZIP` through `HOSP10FY2024.ZIP`, for example https://downloads.cms.gov/FILES/HCRIS/HOSP10FY2016.ZIP).
-
-## Limitations
-
-The Medicare file includes OB-GYNs who billed Medicare Part B for at least 11 patients in a year. It therefore misses OB-GYNs who see very few Medicare patients, often those focused on obstetrics, and is not a count of all practicing OB-GYNs. However, when comparing between states and across time this should matter less, as billing Medicare is plausibly unaffected by a ban. Additionally, newborn nursery days only approximate births, since a newborn typically stays one to two days, so I focus on the trends within each hospital rather than their levels. Finally, these are descriptive comparisons and are not estimates of the effect of the ban.
-
-## Other sources referenced in the piece
-
-- Lisa Lerer, “[When Idaho Banned Abortion, OB-GYNs Fled. The Doctors Who Stayed Are Cracking](https://www.nytimes.com/2026/10/20/magazine/idaho-abortion-ban-ob-gyns.html),” New York Times Magazine, October 20, 2026.
-- Staiger et al., “[Obstetrician and Gynecologist Physicians’ Practice Locations Before and After the Dobbs Decision](https://jamanetwork.com/journals/jamanetworkopen/fullarticle/2833030),” JAMA Network Open, 2025.
-- Strasser et al., “[Lower OBGYN Supply in Abortion-Ban States, Despite Minimal State-Level Changes in the 2 Years Post-Dobbs](https://academic.oup.com/healthaffairsscholar/article/2/12/qxae162/7909263),” Health Affairs Scholar, 2024.
-- Kozhimannil et al., “[Obstetric Care Access Declined in Rural and Urban Hospitals across US States, 2010–22](https://doi.org/10.1377/hlthaff.2024.01552),” Health Affairs, 2025.
-- Washington Reproductive Privacy Act, [RCW 9.02](https://app.leg.wa.gov/rcw/default.aspx?cite=9.02).
-- KMVT, “[St. Luke’s Jerome Medical Center temporarily pausing obstetric, operating room services](https://www.kmvt.com/2021/07/30/st-lukes-jerome-medical-center-temporarily-pausing-obstetric-operating-room-services/),” July 30, 2021.
 
 ## Contact
 

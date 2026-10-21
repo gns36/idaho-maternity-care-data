@@ -187,33 +187,36 @@ restore
 * 1.6 The change before and after the ban, expressed as yearly rates because
 *     the two periods differ in length.
 *------------------------------------------------------------------------------
-keep if inlist(state, "ID", "WA", "US") & inlist(year, 2016, 2021, 2024)
+keep if inlist(state, "ID", "WA", "US") & inlist(year, 2016, 2021, 2022, 2024)
 keep state year obgyn women15_44 rate rank
 reshape wide obgyn women15_44 rate rank, i(state) j(year)
 
 gen pct_total_2016_2021    = 100 * (rate2021 / rate2016 - 1)
 gen pct_per_year_2016_2021 = 100 * ((rate2021 / rate2016)^(1/5) - 1)
-gen pct_per_year_2021_2024 = 100 * ((rate2024 / rate2021)^(1/3) - 1)
-* A positive speedup means the decline was faster after 2021 than before.
-gen speedup = pct_per_year_2016_2021 - pct_per_year_2021_2024
+* The ban took effect in August 2022, so the period after it is measured
+* from 2022, the year the ban took effect, to 2024.
+gen pct_per_year_2022_2024 = 100 * ((rate2024 / rate2022)^(1/2) - 1)
+* A positive speedup means the decline was faster after the ban than before.
+gen speedup = pct_per_year_2016_2021 - pct_per_year_2022_2024
 
 format rate* pct* speedup %6.1f
-list state obgyn2016 obgyn2021 obgyn2024 rate2016 rate2021 rate2024 ///
-    rank2021 pct_per_year_2016_2021 pct_per_year_2021_2024 speedup,  ///
+list state obgyn2016 obgyn2021 obgyn2024 rate2016 rate2021 rate2022 ///
+    rate2024 rank2021 pct_per_year_2016_2021 pct_per_year_2022_2024  ///
+    speedup,                                                         ///
     noobs abbreviate(24)
 export delimited using "$out/obgyn_before_after.csv", replace
 
-* Check that the computed rates match those reported in the piece, where
+* Check that the computed rates match those reported in the README, where
 * Idaho fell about 3 and then 5 percent a year and Washington about 4 and
-* then 6 percent a year, and that Idaho ranked 45th in 2021.
+* then 5 percent a year, and that Idaho ranked 45th in 2021.
 qui su pct_per_year_2016_2021 if state == "ID"
 assert round(r(mean)) == -3
-qui su pct_per_year_2021_2024 if state == "ID"
+qui su pct_per_year_2022_2024 if state == "ID"
 assert round(r(mean)) == -5
 qui su pct_per_year_2016_2021 if state == "WA"
 assert round(r(mean)) == -4
-qui su pct_per_year_2021_2024 if state == "WA"
-assert round(r(mean)) == -6
+qui su pct_per_year_2022_2024 if state == "WA"
+assert round(r(mean)) == -5
 qui su rank2021 if state == "ID"
 assert r(mean) == 45
 
