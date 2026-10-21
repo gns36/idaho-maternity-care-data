@@ -2,46 +2,43 @@
 * replicate.do
 * Author: Gabrielle Sorresso, Cornell University (gns36@cornell.edu)
 *
-* Purpose: Reproduces, from public data, the numbers behind a short piece on
-*          Idaho's maternity care after the state's 2022 abortion ban:
-*            (1) OB-GYNs per woman of reproductive age in Idaho, Washington
-*                and the United States, 2013 to 2024, and how fast that
-*                number fell before and after the ban;
-*            (2) newborn volume at West Valley Medical Center (Caldwell),
-*                which closed its labor and delivery unit in April 2024, and
-*                at St. Luke's Nampa, the unit eight miles away that opened
-*                in December 2017.
+* Purpose: Reproduces the numbers supporting a short piece on maternity care
+*          in Idaho, using publicly available federal data. Part 1 computes
+*          OB-GYNs per woman of reproductive age in Idaho, Washington and the
+*          United States from 2013 to 2024, and the yearly change before and
+*          after Idaho's 2022 abortion ban. Part 2 computes newborn volume at
+*          West Valley Medical Center in Caldwell, which closed its labor and
+*          delivery unit in April 2024, and at St. Luke's Nampa, which opened
+*          about eight miles away in December 2017.
 *
 * HOW TO RUN
-*   Open Stata 16 or later, change the working directory to this folder
-*   (the one holding replicate.do), and type:   do replicate.do
-*   Everything it needs is in Data/. It writes tables to Output/. It takes
-*   under a minute.
+*   Open Stata 16 or later, set the working directory to this folder, and
+*   run do replicate.do. The data are in Data/, and the tables are written
+*   to Output/.
 *
 * WHY MEDICARE BILLING RECORDS FOR OB-GYNS
-*   No public file counts every practicing OB-GYN by state and year. The
-*   Centers for Medicare and Medicaid Services (CMS) file "Medicare Physician
-*   and Other Practitioners, by Provider" lists every clinician who billed
-*   Medicare Part B for at least 11 patients in a year, back to 2013. That
-*   provides one consistent series. One limitation is that it misses OB-GYNs
+*   No public file counts every practicing OB-GYN by state and year. I
+*   therefore use the Centers for Medicare and Medicaid Services (CMS) file
+*   "Medicare Physician and Other Practitioners, by Provider," which lists
+*   every clinician who billed Medicare Part B for at least 11 patients in a
+*   year beginning in 2013. That provides one consistent series. One limitation is that it misses OB-GYNs
 *   who see very few Medicare patients, often those focused on obstetrics, so
 *   it is not a headcount. However, when comparing between states and across
 *   time this should matter less, as billing Medicare is plausibly unaffected
 *   by a ban.
 *
 * WHY OB-GYNs PER REPRODUCTIVE-AGE WOMAN
-*   Idaho's count of OB-GYNs barely moved before the ban while its number of
-*   women aged 15 to 44 grew quickly, so a raw count hides how thin coverage
-*   was becoming. Every rate here is OB-GYNs per 100,000 women aged 15 to 44
-*   (using Census Bureau population estimates).
-*
+*   Idaho's number of OB-GYNs changed little before the ban, while its
+*   population of women aged 15 to 44 grew, so a count alone would understate
+*   the decline in coverage. I therefore express every rate as OB-GYNs per
+*   100,000 women aged 15 to 44, using Census Bureau population estimates.
 *
 * WHY NEWBORN NURSERY DAYS FOR HOSPITALS
-*   Hospitals do not publish births. Their Medicare cost reports (HCRIS) do
-*   report newborn nursery days, which track births closely within a hospital
-*   over time (a typical newborn stays one to two days). The levels are
-*   approximate; the trends within each hospital are what matter for the
-*   argument presented.
+*   Hospitals do not publish the number of births. However, their Medicare
+*   cost reports (HCRIS) report newborn nursery days, which follow births
+*   closely within a hospital over time, since a newborn typically stays one
+*   to two days. The levels are therefore approximate, and the trends within
+*   each hospital are what matter for the argument presented.
 *
 *==============================================================================
 
@@ -53,7 +50,9 @@ set more off
 global root "`c(pwd)'"
 global data "$root/Data"
 global out  "$root/Output"
+global figs "$root/figures"
 capture mkdir "$out"
+capture mkdir "$figs"
 
 *==============================================================================
 * PART 1. OB-GYNs PER WOMAN, BY STATE AND YEAR
@@ -95,8 +94,8 @@ count if in51 == 0
 di as txt "Rows outside the 50 states and DC, excluded: " r(N)
 keep if in51 == 1
 
-* A clinician should appear once a year, so drop any duplicated entries;
-* the report above the drop shows how many there were.
+* A clinician should appear once a year, so I drop any duplicated entries
+* after reporting how many there are.
 duplicates report year rndrng_npi
 duplicates drop year rndrng_npi, force
 isid year rndrng_npi
@@ -132,8 +131,8 @@ save "$out/obgyn_state_year.dta", replace
 export delimited using "$out/obgyn_state_year.csv", replace
 
 *------------------------------------------------------------------------------
-* 1.3 Add the United States, pooling counts and women across states (a
-*     national rate, not an average of state rates).
+* 1.3 Add the United States, pooling OB-GYNs and women across states so the
+*     national rate is not an average of state rates.
 *------------------------------------------------------------------------------
 preserve
 collapse (sum) obgyn women15_44, by(year)
@@ -160,7 +159,33 @@ export delimited using "$out/obgyn_per_woman_by_year.csv", replace
 restore
 
 *------------------------------------------------------------------------------
-* 1.5 Before and after the ban, as compound yearly rates. 
+* 1.5 Figure: OB-GYNs per 100,000 women aged 15 to 44 in Idaho, Washington and
+*     the United States, 2013 to 2024.
+*------------------------------------------------------------------------------
+preserve
+keep if inlist(state, "ID", "WA", "US")
+twoway (connected rate year if state == "US", lcolor(gs9) mcolor(gs9) ///
+            msymbol(circle) lpattern(dash))                               ///
+       (connected rate year if state == "ID", lcolor(navy) mcolor(navy)  ///
+            msymbol(circle) lwidth(medthick))                             ///
+       (connected rate year if state == "WA", lcolor(maroon)             ///
+            mcolor(maroon) msymbol(square)),                              ///
+    xline(2022.6, lpattern(shortdash) lcolor(gs6))                        ///
+    text(44 2022.5 "Idaho ban, Aug. 2022", place(w) size(small))          ///
+    xlabel(2013(1)2024, labsize(small)) ylabel(15(5)45, angle(0))         ///
+    xtitle("") ytitle("OB-GYNs per 100,000 women aged 15 to 44")          ///
+    legend(order(2 "Idaho (abortion banned 2022)"                         ///
+                 3 "Washington (abortion protected)"                      ///
+                 1 "United States") rows(1) size(small) position(6))      ///
+    note("Source: CMS Medicare Physician and Other Practitioners; Census Bureau population estimates.", ///
+         size(small) span)                                                ///
+    graphregion(color(white)) plotregion(color(white))
+graph export "$figs/obgyn_per_woman.png", replace width(2000)
+restore
+
+*------------------------------------------------------------------------------
+* 1.6 The change before and after the ban, expressed as yearly rates because
+*     the two periods differ in length.
 *------------------------------------------------------------------------------
 keep if inlist(state, "ID", "WA", "US") & inlist(year, 2016, 2021, 2024)
 keep state year obgyn women15_44 rate rank
@@ -169,7 +194,7 @@ reshape wide obgyn women15_44 rate rank, i(state) j(year)
 gen pct_total_2016_2021    = 100 * (rate2021 / rate2016 - 1)
 gen pct_per_year_2016_2021 = 100 * ((rate2021 / rate2016)^(1/5) - 1)
 gen pct_per_year_2021_2024 = 100 * ((rate2024 / rate2021)^(1/3) - 1)
-* Positive speed-up = the decline was faster after 2021 than before.
+* A positive speedup means the decline was faster after 2021 than before.
 gen speedup = pct_per_year_2016_2021 - pct_per_year_2021_2024
 
 format rate* pct* speedup %6.1f
@@ -178,8 +203,9 @@ list state obgyn2016 obgyn2021 obgyn2024 rate2016 rate2021 rate2024 ///
     noobs abbreviate(24)
 export delimited using "$out/obgyn_before_after.csv", replace
 
-* Stop if the data no longer support the piece: Idaho fell about 3 then 5
-* percent a year, Washington about 4 then 6, and Idaho ranked 45th in 2021.
+* Check that the computed rates match those reported in the piece, where
+* Idaho fell about 3 and then 5 percent a year and Washington about 4 and
+* then 6 percent a year, and that Idaho ranked 45th in 2021.
 qui su pct_per_year_2016_2021 if state == "ID"
 assert round(r(mean)) == -3
 qui su pct_per_year_2021_2024 if state == "ID"
@@ -197,8 +223,8 @@ assert r(mean) == 45
 * West Valley Medical Center (Caldwell, CMS certification number 130014)
 * closed labor and delivery on April 1, 2024. St. Luke's Nampa (130071),
 * about eight road miles away, began delivering in December 2017. If births
-* moved from one to the other, West Valley's newborn days should fall as
-* St. Luke's Nampa's rise, while the county's births grow.
+* shifted from West Valley to St. Luke's Nampa, newborn days at West Valley
+* should fall as those at St. Luke's Nampa rise.
 
 import delimited "$data/hcris_idaho_newborn_days.csv", clear varnames(1) ///
     stringcols(2)
@@ -210,12 +236,12 @@ label var nursery_days "Newborn nursery inpatient days"
 sort ccn fy
 list hospital fy fy_bgn fy_end nursery_days, sepby(ccn) noobs abbreviate(16)
 
-* St. Luke's Nampa's first cost report starts December 7, 2017, the month
-* the unit opened; it is a partial year.
+* St. Luke's Nampa's first cost report begins December 7, 2017, when the
+* unit opened, so fiscal 2018 is a partial year.
 qui su fy if ccn == "130071"
 assert r(min) == 2018
 
-* West Valley: fiscal 2016 to fiscal 2023, its last full year of deliveries.
+* West Valley, from fiscal 2016 to fiscal 2023, its last full year of deliveries.
 qui su nursery_days if ccn == "130014" & fy == 2016
 local wv16 = r(mean)
 qui su nursery_days if ccn == "130014" & fy == 2023
@@ -226,7 +252,7 @@ di as txt "West Valley newborn days, FY2016 to FY2023: " `wv16' " to " ///
 assert `wv16' == 1058 & `wv23' == 448
 assert round(`wv_change') == -58
 
-* St. Luke's Nampa: first (partial) year to fiscal 2023.
+* St. Luke's Nampa, from its first (partial) year to fiscal 2023.
 qui su nursery_days if ccn == "130071" & fy == 2018
 local sl18 = r(mean)
 qui su nursery_days if ccn == "130071" & fy == 2023
